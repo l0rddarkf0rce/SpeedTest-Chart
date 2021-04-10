@@ -30,6 +30,10 @@ The database that the application uses is a simple SQLite3 database and in my ca
 it in /data/speedtest/db and then I link that folder to the /app/data folder in the
 container.
 
+I am not a python developer (I did this to teach myself some python and flask) so the
+code is not perfect, and I know that there are much better/prettier/efficient/etc.
+ways to do things, but it works and it is easy to follow and understand.
+
 ISC License (ISC)
 Copyright 2021 L0rddarkF0rce
 
