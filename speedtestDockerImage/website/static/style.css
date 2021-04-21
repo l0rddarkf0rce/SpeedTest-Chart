@@ -1,0 +1,13 @@
+body {
+    font-family: Sans-serif;
+}
+
+label {
+    color:blue;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+button {
+    font-weight: bold;
+}

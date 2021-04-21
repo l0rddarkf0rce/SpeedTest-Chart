@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <title>Speed Test Chart</title>
+        <script src="./static/charts.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./static/style.css" />
+    </head>
+    <body>
+        <center>
+            <form action="/newchart" method="post" id='myForm'>
+                <label for="sd">Start Date: </label>
+                <input type="datetime-local" name="sd" id="sd" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+                <label for="ed">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End Date: </label>
+                <input type="datetime-local" name="ed" id="ed" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+                <br>
+                <br>
+                <button type="submit">Get Data</button>
+            </form>
+        </center>
+        <br>
+        <br>
+        <canvas id='myChart'height='100' style='border:1px solid' />
+        <script type='text/javascript'>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var mydata = '{{jsonData}}'.replace(/&#39\;/g, '"');
+            var jData = JSON.parse(mydata);
+            var dl = [];
+            var ul = [];
+            var myLabels = [];
+
+            for (x=0; x < jData.length; x++)
+            {
+                myLabels.push(jData[x]['date']);
+                dl.push(jData[x]['dlBytes'] / 1000000);
+                ul.push(jData[x]['ulBytes'] / 1000000);
+            }
+            document.forms['myForm'].elements['sd'].value = myLabels[0];
+            document.forms['myForm'].elements['ed'].value = myLabels[myLabels.length - 1];
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: myLabels,
+                    datasets: [{
+                        label: 'Download Speed',
+                        data: dl,
+                        backgroundColor: window.chartColors.red,
+                        borderColor: window.chartColors.red,                            
+                        fill: false
+                    },
+                    {
+                        label: 'Upload Speed',
+                        data: ul,
+                        backgroundColor: window.chartColors.blue,
+                        borderColor: window.chartColors.blue,                            
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Speedtest Results',
+                            font: {
+                                size: 22,
+                                family: 'sans-serif'
+                            }
+                        }                    
+                    },
+                    elements: {
+                        line: {
+                            tension: 0
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Date',
+                                font: {
+                                    size: 16,
+                                    family: 'sans-serif'
+                                }
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Mega Bytes per second',
+                                font: {
+                                    size: 16,
+                                    family: 'sans-serif'
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
