@@ -34,6 +34,25 @@ I am not a python developer (I did this to teach myself some python and flask) s
 code is not perfect, and I know that there are much better/prettier/efficient/etc.
 ways to do things, but it works and it is easy to follow and understand.
 
+# Populate the database
+Here are the steps to populate the DB. I do all of this on a linux box so commands given will be linux, if you use Windows or Mac you need to figure it out on oyur own, but the steps should be similar.
+
+	1. Download the speedtest CLI for your OS from (https://www.speedtest.net/apps/cli)
+	2. Extract the files and put somewhere where you can run it (somewhere in your path)
+	3. I created a script that I run via cron
+		#!/bin/bash
+		fn="/data/speedtest/"$(hostname)"-"$(date +"%s")".json"
+		/usr/local/bin/speedtest -f json > $fn
+	4. I created a python script that grabs the JSON file and adds the data to the 
+	   database. Eventually I will put the script here (it needs a lot of cleaning), 
+	   but feel free to create your own and use that.
+	5. I created 2 cron jobs that run every 4 hours that run each of the scripts
+		10 */4 * * * /usr/bin/dospeedtest 2>&1       <- This is the file created on #3
+		20 */4 * * * /usr/bin/json2db 2>&!           <- This is the script on #4
+
+If you have any questions let me know and I'll do my best to help. 
+
+# License
 ISC License (ISC)
 Copyright 2021 L0rddarkF0rce
 
