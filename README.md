@@ -15,12 +15,12 @@ yourself out the alpine version is small enough and it works.
 After you build the image run it using the following
 
 	docker run -d \
-    	--name speedtest \
-    	-p 8080:8080 \
-    	-e TZ="America/New York" \
-    	-v /data/speedtest/db:/app/data \
-    	--restart=unless-stopped \
-    	l0rddarkf0rce/speedtest
+    	   --name speedtest \
+    	   -p WHATEVER_PORT_YOU_WANT_TO_USE:8080 \
+    	   -e TZ="America/New York" \
+    	   -v WHERE_IS_YOUR_DBFILE:/app/db \
+    	   --restart=unless-stopped \
+    	   speedtest
 
 As you can see the default port of the container is 8080 but you can port forward any
 port you want to it or you can just change the source code before building the image and
